@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Convertitore Morse</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MorseApp">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.jpg">
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+    
+    <link rel="stylesheet" href="style.css">
+    <!-- Font fallback simile a OCR se non presente -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigazione semplice per passare tra le schermate -->
+    <nav style="background: rgb(255, 248, 220); padding: 10px; text-align: center; border-bottom: 2px solid rgb(211,211,211);">
+        <button onclick="showScreen('screen1')" class="nav-btn">Trasmissione</button>
+        <button onclick="showScreen('screen2')" class="nav-btn">Ricezione</button>
+    </nav>
+
+    <!-- SCHERMATA 1: TRASMISSIONE -->
+    <div id="screen1" class="screen active">
+        <h1 class="main-title">Convertitore<br>Testo &rarr; Morse</h1>
+        
+        <!-- Input Testo -->
+        <textarea id="inputText" placeholder="Inserisci il tuo testo qui"></textarea>
+        
+        <!-- Pulsante Conversione -->
+        <button id="btnConvert" class="action-btn text-btn">Converti in Morse</button>
+        
+        <h2 class="sub-title">Codice Morse tradotto:</h2>
+        
+        <!-- Output Morse -->
+        <textarea id="outputMorse" placeholder="Il testo tradotto in codice Morse apparirà qui" readonly></textarea>
+        
+        <div class="controls-container">
+            <h2 class="sub-title" style="width: 100%; margin-bottom: 5px;">Opzioni di invio:</h2>
+            
+            <!-- Pulsante Copia -->
+            <button id="btnCopy" class="icon-btn small-btn" title="Copia">
+                Copia &#128203;
+            </button>
+            
+            <div class="media-controls">
+                <!-- Torcia -->
+                <button id="btnTorch" class="icon-btn square-btn">
+                    &#128294; <!-- Icona Torcia -->
+                </button>
+                
+                <!-- Suono -->
+                <button id="btnSound" class="icon-btn square-btn">
+                    &#128266; <!-- Icona Altoparlante -->
+                </button>
+                
+                <div class="loop-controls">
+                    <button id="btnLoop" class="action-btn small-text-btn">Loop &#128257;</button>
+                    <button id="btnStop" class="action-btn small-text-btn">Stop &#9632;</button>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="main-title" style="margin-top: 20px;">Convertitore<br>Morse &rarr; Testo</h1>
+        
+        <!-- Input Morse Manuale -->
+        <textarea id="inputMorseManual" placeholder="Testo in Morse"></textarea>
+        <textarea id="outputTranslatedText" placeholder="Testo tradotto" readonly></textarea>
+    </div>
+
+    <!-- SCHERMATA 2: RICEZIONE -->
+    <div id="screen2" class="screen">
+        <h1 class="main-title">Ricezione<br>messaggio</h1>
+        
+        <h2 class="sub-title">Scegliere metodo di ricezione (visivo | audio):</h2>
+        
+        <div class="rx-buttons">
+            <button id="btnRxCamera" class="icon-btn wide-btn">&#128247;</button> <!-- Fotocamera -->
+            <button id="btnRxAudio" class="icon-btn wide-btn">&#127911;</button> <!-- Cuffie/Audio -->
+        </div>
+
+        <button id="btnRxStop" class="action-btn text-btn">Stop ricezione</button>
+
+        <!-- Anteprima Fotocamera -->
+        <div id="cameraContainer">
+            <video id="videoElement" autoplay playsinline></video>
+            <canvas id="canvasElement" style="display:none;"></canvas>
+            <div id="cameraOverlay">
+                <div class="red-box"></div>
+                <span>Anteprima fotocamera</span>
+            </div>
+        </div>
+
+        <h2 class="sub-title">Messaggio ricevuto:</h2>
+        <textarea id="rxMorse" placeholder="Il messaggio in codice Morse ricevuto appare qui in tempo reale" readonly></textarea>
+
+        <h2 class="sub-title">Traduzione:</h2>
+        <textarea id="rxText" placeholder="Il codice Morse ricevuto viene tradotto in testo reale e appare qui" readonly></textarea>
+    </div>
+
+    <!-- Overlay per simulazione Torcia (Schermo intero) -->
+    <div id="flashOverlay"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
