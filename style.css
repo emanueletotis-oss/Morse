@@ -1,208 +1,257 @@
-/* Importazione font simile a OCR A se non disponibile */
+/* Font fallback */
 @font-face {
     font-family: 'OCR A Extended';
-    src: local('OCR A Extended'), local('OCR A'), url('https://fonts.cdnfonts.com/s/15297/OCRAExtended.woff') format('woff');
+    src: local('OCR A Extended'), local('OCR A'), monospace;
 }
 
 body {
-    font-family: 'OCR A Extended', 'VT323', monospace;
+    /* Sfondo generale BLU come da screenshot PDF */
+    background-color: rgb(100, 149, 237); 
+    font-family: 'OCR A Extended', monospace;
     margin: 0;
     padding: 0;
-    background-color: white;
     color: black;
+    padding-bottom: 50px;
 }
 
-/* Navigazione Tab */
-.screen {
-    display: none;
+/* Navigazione */
+.top-nav {
+    display: flex;
+    justify-content: center;
+    background: transparent;
     padding: 10px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-.screen.active {
-    display: block;
 }
 .nav-btn {
-    background: rgb(240, 248, 255);
-    border: 1px solid rgb(211,211,211);
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    font-weight: bold;
+}
+.nav-btn.active {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.screen {
+    display: none;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px;
+}
+.active-screen {
+    display: block;
+}
+
+/* Header */
+.header-block {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.main-title {
+    /* PDF: titoli colore cornsilk (usato come colore testo per contrasto su sfondo blu) */
+    color: rgb(255, 248, 220); 
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Input Groups */
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+.label-text {
+    /* Sottotitoli cornsilk */
+    color: rgb(255, 248, 220);
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.white-text {
+    color: white;
+}
+.center-text {
+    text-align: center;
+}
+
+.input-area {
+    width: 100%;
+    box-sizing: border-box;
+    /* Riquadro sfondo bianco bordo lightgrey */
+    background-color: white;
+    border: 3px solid rgb(211, 211, 211);
+    border-radius: 10px;
+    min-height: 80px;
     padding: 10px;
     font-family: inherit;
-    cursor: pointer;
+    font-size: 16px; /* Più grande per mobile */
+    resize: none;
 }
 
-/* 1. Titoli */
-.main-title {
-    background-color: rgb(255, 248, 220);
-    color: black; /* Specifiche dicono testo nero su sfondo cornsilk per leggibilità, ma PDF dice colore cornsilk? No, dice sfondo. Seguo PDF: colore testo standard, sfondo cornsilk */
-    /* Rileggendo PDF: "titoli... colore cornsilk". Questo solitamente è lo sfondo in UI design standard, ma se intende il testo: */
-    /* MODIFICA: Il PDF dice "titoli... colore cornsilk". Ma lo sfondo è bianco nelle immagini e i titoli sono blu/bianchi. 
-       Tuttavia, il punto 1 dice "colore cornsilk (255, 248, 220)". Cornsilk è un giallino molto chiaro.
-       Userò Cornsilk come SFONDO del blocco titolo come da prassi per "titoli evidenziati" o testo se sfondo scuro. 
-       Guardando le immagini allegate nel prompt, i titoli hanno sfondo blu e testo bianco.
-       MA il PDF testuale dice: "titoli ... colore cornsilk".
-       Seguirò rigorosamente i valori RGB del testo PDF per i colori, adattando per leggibilità. */
-    color: rgb(0,0,0); 
-    background-color: rgb(255, 248, 220); 
-    font-size: 18px;
+/* Buttons */
+.action-btn {
+    /* Sfondo aliceblue, testo firebrick */
+    background-color: rgb(240, 248, 255);
+    color: rgb(178, 34, 34);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: inherit;
     font-weight: bold;
-    text-align: center;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-
-/* 2. Sottotitoli */
-.sub-title {
-    background-color: rgb(255, 248, 220);
-    color: black;
+.big-btn {
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.small-btn {
     font-size: 14px;
-    padding: 5px;
+    width: 100%;
     margin-bottom: 5px;
 }
 
-/* 3, 4, 5, 6, 14, 15, 16. Riquadri (Textareas) */
-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    border: 2px solid rgb(211, 211, 211);
-    background-color: white;
-    font-family: 'OCR A Extended', monospace;
-    font-size: 12px;
-    padding: 10px;
-    margin-bottom: 10px;
-    resize: none;
-    min-height: 80px;
-    color: black;
-}
-textarea::placeholder {
-    color: rgb(211, 211, 211);
-}
-
-/* 7, 13, 17, 18. Pulsanti Testo (Converti, Stop, etc) */
-.action-btn {
-    background-color: rgb(240, 248, 255); /* AliceBlue */
-    border: 2px solid rgb(211, 211, 211);
-    color: rgb(178, 34, 34); /* Firebrick */
-    font-family: 'OCR A Extended', monospace;
-    font-size: 14px;
-    padding: 10px;
-    width: 100%;
-    cursor: pointer;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-/* 8, 9, 10, 11, 12. Pulsanti Icona e Controlli */
-.controls-container {
-    border: 1px solid rgb(211,211,211);
-    padding: 10px;
-    background: rgb(240, 248, 255);
-    margin-bottom: 15px;
-}
-
-.media-controls {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.icon-btn {
+/* Copy Badge */
+.copy-badge {
+    position: absolute;
+    right: 5px;
+    bottom: -30px; /* Posizionato sotto come layout PDF */
     background-color: rgb(240, 248, 255);
-    border: 2px solid rgb(211, 211, 211);
     color: rgb(178, 34, 34);
-    font-size: 24px;
+    border: 1px solid rgb(211,211,211);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Controls Panel */
+.controls-panel {
+    margin-bottom: 20px;
+}
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+.icon-btn {
+    background-color: white; /* Icone su sfondo bianco */
+    border: 3px solid rgb(211, 211, 211);
+    border-radius: 10px;
+    color: rgb(178, 34, 34);
+    font-size: 40px;
+    width: 80px;
+    height: 80px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
-.square-btn {
-    width: 60px;
-    height: 60px;
+.icon-btn:active {
+    background-color: #eee;
 }
 
-.small-btn {
-    font-size: 12px;
-    padding: 5px 10px;
-    width: auto;
-    float: right;
-    margin-top: -30px; /* Hack per allineare come nel PDF */
-}
-
-.small-text-btn {
-    font-size: 12px;
-    padding: 5px;
-    margin: 2px;
-    width: 80px;
-}
-
-.loop-controls {
+.sub-controls {
     display: flex;
     flex-direction: column;
+    width: 90px;
 }
 
-.rx-buttons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+/* Loop Button States */
+.loop-off {
+    background-color: rgb(240, 248, 255); /* Standard Aliceblue */
+    color: rgb(178, 34, 34);
+    border: 2px solid rgb(178, 34, 34); /* Bordo rosso */
 }
-.wide-btn {
+.loop-on {
+    background-color: #4CAF50 !important; /* Verde */
+    color: white !important;
+    border: 2px solid darkgreen;
+}
+
+.stop-btn {
+    border: 2px solid rgb(178, 34, 34);
+}
+
+.mt-20 { margin-top: 30px; }
+
+/* Ricezione */
+.wide-rx {
     flex: 1;
-    padding: 15px;
+    height: 60px;
+    font-size: 30px;
+}
+.rx-buttons-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
 }
 
-/* 14. Anteprima Fotocamera */
 #cameraContainer {
     position: relative;
     width: 100%;
-    height: 200px;
-    background-color: rgb(192, 192, 192); /* Silver */
-    border: 2px solid rgb(211, 211, 211);
+    height: 250px;
+    background-color: #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    margin-bottom: 10px;
 }
-
 #videoElement {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: none; /* Nascosto finché non attivo */
+    display: none;
 }
-#videoElement.active {
-    display: block;
-}
+#videoElement.active { display: block; }
+#canvasElement { display: none; }
 
 #cameraOverlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: black;
-    font-size: 18px;
-    pointer-events: none;
 }
-
-#cameraOverlay .red-box {
-    width: 50px;
-    height: 50px;
-    border: 2px solid red;
-    display: none; /* Mostrato solo quando attivo */
-    margin-bottom: 10px;
+.target-box {
+    width: 60px;
+    height: 60px;
+    border: 3px solid red;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    display: none;
 }
+#signalIndicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: black;
+    border: 2px solid white;
+    z-index: 10;
+}
+.signal-active { background-color: lime !important; box-shadow: 0 0 10px lime; }
 
-/* Flash Overlay per iOS */
 #flashOverlay {
+    display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background: white;
     z-index: 9999;
-    display: none;
-    pointer-events: none;
 }
